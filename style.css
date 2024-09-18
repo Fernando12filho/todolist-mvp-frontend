@@ -1,0 +1,118 @@
+@font-face {
+    font-family: 'Fascinate Inline';
+    src: url('static/fonts/Fascinate_inline/FascinateInline-Regular.ttf') format('truetype');
+    /* Add other formats like .woff or .woff2 if available for better compatibility */
+}
+@font-face {
+    font-family: 'Archivo Narrow';
+    src: url('static/fonts/Archivo_Narrow/ArchivoNarrow-Italic-VariableFont_wght.ttf') format('truetype');
+    src: url('static/fonts/Archivo_Narrow/ArchivoNarrow-VariableFont_wght.ttf') format('truetype');
+    /* Add other formats like .woff or .woff2 if available for better compatibility */
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: 'Archivo Narrow', sans-serif;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    width: 75vw;
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+#titulo{
+    font-family: 'Fascinate Inline', sans-serif;
+    font-size: 67px;
+}
+
+form{
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 0 60px 0;
+}
+
+form input{
+    width: 250px;
+    height: 40px;
+    border-radius: 8px;
+    padding-left: 10px;
+    border-color: black;
+    border-width: 1px;
+}
+
+#create-task-button{
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+    border-radius: 8px;
+    border-style: none;
+    background-color: blueviolet;
+}
+
+ul{
+    margin-bottom: 60px;
+}
+
+li{
+    color: white;
+    list-style-type: none;
+    height: 75px;
+    display: flex;
+    background-color: #15101c;
+    margin: 10px 0;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    border-radius: 8px;
+    font-size: 20px;
+}
+
+input[type="checkbox"] {
+    appearance: none; /* Removes default styling */
+    -webkit-appearance: none; /* For WebKit-based browsers */
+    width: 20px;
+    height: 20px;
+    border: 2px solid #333; /* Border of the checkbox */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer;
+    position: relative;
+    margin-right: 10px;
+}
+
+/* Custom checkmark */
+input[type="checkbox"]:checked::before {
+    color: white;
+    content: ""; /* Creates the checkmark */
+    position: absolute;
+    top:-5px;
+    left: 5px;
+    width: 10px;
+    height: 16px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+
+/* Optional: Change checkbox background when checked */
+input[type="checkbox"]:checked {
+    background-color: #333;
+    border-color: #333;
+}
+
+#end-day-button{
+    height: 40px;
+    width: 200px;
+    border-radius: 8px;
+    border-style: none;
+    background-color: #9e78cf;
+}
+
+
+
+
