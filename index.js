@@ -1,97 +1,22 @@
 document.getElementById('taskForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevents page reload
-    fetchTasks(); // Call your function here
+    event.preventDefault();
+    fetchTasks(); 
 });
 
+//Funcao para habilitar Botao "Terminar Dia", recebe uma lista de tasks
 function updateEndDayButtonState(tasks) {
     const endDayButton = document.getElementById('end-day-button');    
-    // Check if there are any tasks at all
+    //Confirma se existem tasks
     if (tasks.length > 0) {
-        // Enable the button if there are tasks
+        //Habilita botao de terminar dia  
         endDayButton.disabled = false;
     } else {
-        // Disable the button if there are no tasks
+        //Desabilita o botao de terminar dia 
         endDayButton.disabled = true;
     }
 }
 
-/*
-function fetchTasks() {
-    console.log('Inside fetchTasks')
-    fetch('http://127.0.0.1:5000/tasks')
-    .then(response => response.json())
-    .then(tasks => {
-        const listDisplay = document.getElementById('task-lists')
-        const taskList = document.createElement('ul');
-        
-        tasks.forEach(task => {
-            const listItem = document.createElement('li');
-            
-            // Create the checkbox input element
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.checked = task.completed; // Set checkbox based on task's completion status
-            checkbox.dataset.taskId = task.id;
-            checkbox.addEventListener('change', function(){
-                const li = this.closest('li');
-                if(this.checked){
-                    li.style.textDecoration = "line-through";
-                    li.style.color = "#78CFB0"
-                } else {
-                    li.style.backgroundColor = "#f9f9f9";
-                }
-            })
-
-            // Create a label associated with the checkbox
-            const label = document.createElement('label');
-            label.setAttribute('for', checkbox.id);
-
-            checkbox.addEventListener('change', function() {
-                const completed = this.checked;
-                const taskId = this.dataset.taskId;
-
-                 // Log taskId to ensure it is correctly set
-                console.log('Checkbox clicked for task ID:', taskId);
-
-                fetch(`http://127.0.0.1:5000/update/${taskId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ completed: completed })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data.message);
-                    // Optionally handle success or update the UI
-                })
-                .catch(error => console.error('Error:', error));
-            });
-            //checkbox.disabled = true; // Make the checkbox read-only; remove this line if you want to allow user interaction
-
-            // Add a label or text for the list item
-            const taskText = document.createElement('span');
-            taskText.textContent = `${task.title}: ${task.description}  `;
-
-            // Append the text and checkbox to the list item
-            listItem.appendChild(taskText);
-            listItem.appendChild(checkbox);
-
-            // Append the list item to the task list
-            taskList.appendChild(listItem);
-        });
-
-        listDisplay.appendChild(taskList)
-
-        updateEndDayButtonState(tasks)
-    })
-    .catch(error => {
-        console.error('Error fetching tasks:', error);
-    });
-
-}
-*/
-
+//Acessa banco de dados e seleciona tasks existentes
 function fetchTasks() {
     console.log('Fetching tasks...');
     fetch('http://127.0.0.1:5000/tasks')
@@ -107,6 +32,7 @@ function fetchTasks() {
         });
 
         listDisplay.appendChild(taskList);
+        //Faz call da funcao para atualizar botao
         updateEndDayButtonState(tasks); // Update button state if needed
     })
     .catch(error => {
@@ -114,16 +40,17 @@ function fetchTasks() {
     });
 }
 
+//Cria cards para as tarefas
 function createTaskListItem(task) {
     const listItem = document.createElement('li');
     
-    // Create the checkbox input element
+    //Cria checkbox para funcao de dar tarefa como feita
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-    checkbox.checked = task.completed; // Set checkbox based on task's completion status
+    checkbox.checked = task.completed; //Baseado se a tarefa esta completa ou nao vai atualizar checkbox
     checkbox.dataset.taskId = task.id;
 
-    // Add event listener to handle checkbox changes
+    //Adiciona EventListener para mudanca de cor no texto caso tarefa esteja completa
     checkbox.addEventListener('change', function() {
 
         const li = this.closest('li');
@@ -134,30 +61,31 @@ function createTaskListItem(task) {
             li.style.textDecoration = 'none'; // Remove strikethrough
         }
 
-        // Update task completion status on the server
+        //Atualiza se tarefa esta completa 
         updateTaskCompletion(task.id, this.checked);
     });
 
-    // Create a label or text for the list item
+    //Criar texto para li de tarefas
     const taskText = document.createElement('span');
     taskText.textContent = `${task.title}: ${task.description}`;
 
-    // Append the text and checkbox to the list item
+    //Appen text and checkbox na lista
     listItem.appendChild(taskText);
     listItem.appendChild(checkbox);
 
-    // Set initial styles based on task completion status
+    //Se task esta completa, muda cores e escrita
     if (task.completed) {
         listItem.style.textDecoration = 'line-through';
         listItem.style.color = '#78CFB0';
     }
 
-    return listItem; // Return the fully constructed list item
+    return listItem;
 }
-
+//                                                                            ^ ^ ^ ^
+//Atualiza se task esta completa ou nao, chamada no eventlistener do checkbox | | | |(a cima)
 function updateTaskCompletion(taskId, completed) {
     console.log('Updating task completion for task ID:', taskId);
-
+    //Faz requisicao para rota update da api
     fetch(`http://127.0.0.1:5000/update/${taskId}`, {
         method: 'POST',
         headers: {
@@ -167,6 +95,7 @@ function updateTaskCompletion(taskId, completed) {
     })
     .then(response => response.json())
     .then(data => {
+        //console log mensagem positiva de atualizacao
         console.log(data.message);
     })
     .catch(error => {
@@ -174,6 +103,7 @@ function updateTaskCompletion(taskId, completed) {
     });
 }
 
+//Funcao para criar task
 document.getElementById('taskForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -192,7 +122,9 @@ document.getElementById('taskForm').addEventListener('submit', function(event) {
     .catch(error => console.error('Error:', error));
 });
 
+//Funcao que limpa tarefas feitas
 document.getElementById('end-day-button').addEventListener('click', function() {
+
     fetch('http://127.0.0.1:5000/end-day', {
         method: 'POST',
         headers: {
@@ -203,7 +135,7 @@ document.getElementById('end-day-button').addEventListener('click', function() {
     .then(data => {
         console.log(data.message);
         // Optionally refresh the task list
-        fetchTasks();
+        //fetchTasks();
     })
     .catch(error => console.error('Error:', error));
 });
