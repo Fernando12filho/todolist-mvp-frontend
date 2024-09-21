@@ -84,19 +84,24 @@ function createTaskListItem(task) {
 //                                                                            ^ ^ ^ ^
 //Atualiza se task esta completa ou nao, chamada no eventlistener do checkbox | | | |(a cima)
 function updateTaskCompletion(taskId, completed) {
+
     console.log('Updating task completion for task ID:', taskId);
-    //Faz requisicao para rota update da api
+    console.log('Completed status:', completed);
     fetch(`http://127.0.0.1:5000/update/${taskId}`, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ completed: completed })
+        body: JSON.stringify({ completed: completed })  // Envia apenas o campo completed no body
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => { throw new Error(text); });
+        }
+        return response.json();
+    })
     .then(data => {
-        //console log mensagem positiva de atualizacao
-        console.log(data.message);
+        console.log(data.message);  // Log de mensagem positiva de atualização
     })
     .catch(error => {
         console.error('Error updating task:', error);
@@ -120,13 +125,16 @@ document.getElementById('taskForm').addEventListener('submit', function(event) {
         fetchTasks();
     })
     .catch(error => console.error('Error:', error));
+
+    const titleReset = document.getElementById('title').value = "";
+    const descReset = document.getElementById('description').value = "";
 });
 
 //Funcao que limpa tarefas feitas
 document.getElementById('end-day-button').addEventListener('click', function() {
 
     fetch('http://127.0.0.1:5000/end-day', {
-        method: 'POST',
+        method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
         }

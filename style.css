@@ -28,6 +28,7 @@ body{
 #titulo{
     font-family: 'Fascinate Inline', sans-serif;
     font-size: 67px;
+    align-self: center;
 }
 
 form{
@@ -87,7 +88,7 @@ input[type="checkbox"] {
 /* Custom checkmark */
 input[type="checkbox"]:checked::before {
     color: white;
-    content: ""; /* Creates the checkmark */
+    content: ""; 
     position: absolute;
     top:-5px;
     left: 5px;
@@ -99,7 +100,7 @@ input[type="checkbox"]:checked::before {
 }
 
 
-/* Optional: Change checkbox background when checked */
+/*Change checkbox background when checked */
 input[type="checkbox"]:checked {
     background-color: #333;
     border-color: #333;
@@ -108,8 +109,10 @@ input[type="checkbox"]:checked {
 #end-day-button{
     height: 40px;
     width: 200px;
+    font-size: 16px;
     border-radius: 8px;
     border-style: none;
+    color: white;
     background-color: #9e78cf;
 }
 
